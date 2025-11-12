@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SisBEM - Sistem Pengurusan Bengkel Motosikal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background-color: #f5f5f5; /* Material UI background */
+            color: #212121; /* Material UI text color */
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 1rem auto;
+            padding: 1.5rem;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e8f5e8;
+        }
+
+        .header h1 {
+            color: #1976d2; /* Material UI primary blue */
+            font-size: 2rem;
+            margin: 1rem 0;
+            font-weight: 600;
+        }
+
+        .header img {
+            max-width: 180px;
+            height: auto;
+            margin-bottom: 1rem;
+        }
+
+        .nav {
+            background-color: #1976d2; /* Material UI primary blue */
+            padding: 1rem 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            gap: 0.5rem;
+        }
+
+        .nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            letter-spacing: 0.3px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav a:hover {
+            background-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .nav a.active {
+            background-color: rgba(255,255,255,0.2);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            z-index: 1001;
+            margin-top: 0.5rem;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content a {
+            color: #1976d2;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            display: block;
+            background: white;
+            border: none;
+            border-radius: 0;
+            margin: 0;
+        }
+
+        .dropdown-content a:first-child {
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+        }
+
+        .dropdown-content a:last-child {
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .product-section {
+            display: flex;
+            gap: 3rem;
+            align-items: flex-start;
+            padding: 2rem;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .product-image {
+            flex: 0 0 300px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .product-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .product-content {
+            flex: 1;
+        }
+
+        .product-content h1 {
+            color: #1976d2;
+            margin-bottom: 1.5rem;
+            font-size: 2.5rem;
+        }
+
+        .product-description {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .brochure-button-container {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .apply-button-container {
+            margin-top: 2rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+        }
+
+        .download-now-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #1976d2;
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+            margin: 0 auto;
+        }
+
+        .download-now-button:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
+        }
+
+        .apply-now-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background-color: #1976d2;
+            color: white;
+            padding: 1.2rem 3rem;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(25, 118, 210, 0.2);
+            margin: 0 auto;
+        }
+
+        .apply-now-button:hover {
+            background-color: #1565c0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(25, 118, 210, 0.3);
+        }
+
+        .apply-now-button i {
+            font-size: 1.1rem;
+        }
+
+        .product-features {
+            margin-top: 2rem;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-item i {
+            color: #1976d2;
+            font-size: 1.5rem;
+            margin-top: 0.2rem;
+        }
+
+        .feature-content h3 {
+            color: #1976d2;
+            margin: 0 0 0.5rem 0;
+        }
+
+        .feature-content p {
+            color: #2c3e50;
+            margin: 0;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        .about-section {
+            background-color: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 1px solid #e0e0e0;
+            margin-bottom: 1rem;
+        }
+
+        .about-section h2 {
+            color: #1976d2; /* Material UI primary blue */
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .about-section p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+            color: #2c3e50;
+        }
+
+        .faq-item {
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+        }
+
+        .faq-item h3 {
+            color: #1976d2;
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .faq-item p {
+            color: #2c3e50;
+            font-size: 1.1rem;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .faq-item ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin-top: 1rem;
+        }
+
+        .faq-item ul li {
+            padding: 0.8rem 0;
+            padding-left: 1.8rem;
+            position: relative;
+            color: #2c3e50;
+            font-size: 1.1rem;
+            line-height: 1.6;
+        }
+
+        .faq-item ul li:before {
+            content: "•";
+            color: #1976d2;
+            font-weight: bold;
+            position: absolute;
+            left: 0.5rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature-item {
+            background-color: white;
+            padding: 1.2rem;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+            transition: all 0.3s ease;
+        }
+
+        .feature-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: #1976d2; /* Material UI primary blue */
+        }
+
+        .feature-item i {
+            color: #1976d2; /* Material UI primary blue */
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-item h3 {
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background-color: white;
+            border-radius: 8px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .contact-item i {
+            color: #1976d2; /* Material UI primary blue */
+            font-size: 1.5rem;
+        }
+
+        .contact-item span {
+            color: #2c3e50;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                margin: 0.5rem;
+                padding: 1rem;
+            }
+
+            .nav {
+                padding: 0.5rem;
+                flex-wrap: wrap;
+            }
+
+            .nav a {
+                padding: 0.5rem 0.8rem;
+                font-size: 0.85rem;
+            }
+
+            .about-section {
+                padding: 1rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hero-section {
+            position: relative;
+            margin-bottom: 1.5rem;
+            border-radius: 16px;
+            overflow: hidden;
+            padding: 0;
+            height: 400px;
+        }
+
+        .hero-banner {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-section h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        .hero-section p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background-color: white;
+            color: #1976d2;
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+
+        .stat-item i {
+            font-size: 2.5rem;
+            color: #1976d2;
+            margin-bottom: 1rem;
+        }
+
+        .stat-item .number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1976d2;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item .label {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        .nav .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-right: 2rem;
+            padding-right: 2rem;
+            border-right: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .nav .logo-section i {
+            font-size: 1.5rem;
+            color: white;
+        }
+
+        .nav .logo-section span {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: white;
+            letter-spacing: 0.5px;
+        }
+
+        .footer {
+            background-color: #1976d2;
+            color: white;
+            padding: 1.5rem;
+            text-align: center;
+            margin-top: 1rem;
+        }
+
+        .developed-by {
+            margin-top: 1rem;
+            padding: 0.8rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            display: inline-block;
+        }
+
+        .developed-by p {
+            margin: 0;
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .developer-name {
+            font-weight: bold;
+            font-size: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            padding: 2rem;
+        }
+
+        .image-item {
+            text-decoration: none;
+            text-align: center;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        .image-item:hover {
+            transform: translateY(-5px);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 350px;
+            object-fit: contain;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: white;
+            padding: 1rem;
+        }
+
+        .image-label {
+            margin-top: 1rem;
+            color: #1976d2;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .logo {
+            width: 150px;
+            height: auto;
+            }
+    </style>
+</head>
+<body>
+        <div class="nav">
+        <div class="logo-section">
+            <img src="img/afagroup.jpg" alt="Company Logo" class="logo">
+        </div>
+        <a href="index.html"><i class="fas fa-home"></i> Utama</a>
+        <div class="dropdown">
+            <a href="#"><i class="fas fa-box"></i> Produk <i class="fas fa-chevron-down" style="font-size: 0.8em; margin-left: 5px;"></i></a>
+            <div class="dropdown-content">
+                <a href="educare.html" class="active"><i class="fas fa-graduation-cap"></i> EduCare-i Link</a>
+                <a href="flexitermlife.html"><i class="fas fa-shield-alt"></i> FlexiTermLife</a>
+            </div>
+        </div>
+        <a href="submit.html"><i class="fas fa-file-alt"></i> Borang Permohonan</a>
+    </div>
+
+    <div class="container">
+        <div class="product-section">
+            <div class="product-image">
+                <img src="img/educare.jpg" alt="EduCare-i Link">
+            </div>
+            <div class="product-content">
+                <h1>EduCare-i Link</h1>
+                <div class="product-description">
+                    <p>Menjadi ibu bapa membawa kegembiraan dan tanggungjawab, terutamanya dalam membina asas kehidupan yang berjaya melalui pendidikan. Dengan EduCare-i Link, anda dapat memberikan perlindungan 2-dalam-1 kepada anak anda, sambil membuka peluang untuk masa depan yang lebih cerah.</p>
+                    
+                </div>
+                <div class="product-features">
+                    <div class="feature-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <div class="feature-content">
+                            <h3>Perlindungan Menyeluruh</h3>
+                            <p>Perlindungan terhadap Kematian, Hilang Upaya Menyeluruh dan Kekal, serta Penyakit Kritikal untuk anak anda</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-umbrella"></i>
+                        <div class="feature-content">
+                            <h3>Perlindungan Sumbangan</h3>
+                            <p>Perlindungan bagi sumbangan masa hadapan sekiranya anda tiada</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div class="feature-content">
+                            <h3>Fleksibiliti Pelaburan</h3>
+                            <p>Tempoh pelaburan dan kekerapan sumbangan yang fleksibel</p>
+                        </div>
+                    </div>
+                    <div class="feature-item">
+                        <i class="fas fa-clock"></i>
+                        <div class="feature-content">
+                            <h3>Pilihan Tempoh Matang</h3>
+                            <p>Tiga pilihan tempoh matang pelan</p>
+                        </div>
+                    </div>
+
+                    <div class="brochure-button-container">
+                        <a href="files/educare.pdf" target="_blank" class="download-now-button">
+                            <i class="fas fa-file-signature"></i>Muat Turun Brochure (PDF)
+                        </a>
+                    </div>
+
+                    <div class="apply-button-container">
+                        <a href="submit.html" class="apply-now-button">
+                            <i class="fas fa-file-signature"></i> Mohon Sekarang
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        
+
+        <div class="about-content">
+            <div class="about-section">
+                <h2><i class="fas fa-question-circle"></i> FAQ EduCare-i Link</h2>
+                
+                <div class="faq-item">
+                    <h3>1. Apa itu EduCare-i Link?</h3>
+                    <p>EduCare-i Link ialah Pelan Takaful Berkaitan Pelaburan (Investment-Linked Takaful). Ia menggabungkan Simpanan Pendidikan Anak, Perlindungan Takaful, dan Pelaburan Patuh Syariah.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>2. Mengapa saya perlu mempunyai simpanan pendidikan?</h3>
+                    <p>Kos pendidikan semakin meningkat setiap tahun. Dengan perancangan awal, anda mampu memastikan impian anak tercapai tanpa beban kewangan.</p>
+                </div>
+
+                <div class="faq-item">
+                    <h3>3. Apakah manfaat utama yang ditawarkan oleh EduCare-i Link?</h3>
+                    <p>Pelan ini menawarkan banyak manfaat untuk ketenangan anda dan masa depan anak, termasuk:</p>
+                    <ul>
+                        <li>Dana Pendidikan bila Sijil Matang (apabila anak mencapai umur 18 / 21 / 25 tahun)</li>
+                        <li>Pampasan jika berlaku kematian atau Hilang Upaya Kekal (HUMK)</li>
+                        <li>Pampasan Tambahan untuk 36 Penyakit Kritikal</li>
+                        <li>Sumbangan Diteruskan jika ibu bapa meninggal dunia atau mengalami TPD</li>
+                        <li>Fleksibiliti Simpanan (boleh tambah simpanan bila-bila masa dengan minimum RM50, dan boleh keluarkan sebahagian simpanan bila perlu dengan minimum RM1,000)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        
+
+    <footer class="footer">
+        <div class="developed-by">
+            <div class="developer-name">Afifah Binti Hishamudin | Perunding Insurans & Takaful</div>
+            <p>Ejen sah AmMetLife Takaful Berhad</p>   
+            <p>Alamat: 2nd Floor,No B-274, Jalan Beserah, 25300 Kuantan Pahang Darul Makmur</p>
+            <p>Telefon: 0128853694</p>
+            <p>Emel: caliphricher@gmail.com</p>
+        </div>
+    </footer>
+
+</body>
+</html>
